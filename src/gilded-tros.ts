@@ -3,6 +3,21 @@ import { Item } from "./item";
 export class GildedTros {
   constructor(public items: Array<Item>) {}
 
+  private isGoodWine(item: Item): boolean {
+    return item.name === "Good Wine";
+  }
+
+  private isBackstagePass(item: Item): boolean {
+    return (
+      item.name === "Backstage passes for Re:Factor" ||
+      item.name === "Backstage passes for HAXX"
+    );
+  }
+
+  private isLegendary(item: Item): boolean {
+    return item.name === "B-DAWG Keychain"
+  }
+
   public updateQuality(): void {
     for (let i = 0; i < this.items.length; i++) {
       const item = this.items[i];
