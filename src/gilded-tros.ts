@@ -90,9 +90,7 @@ export class GildedTros {
           break;
       }
 
-      if (item.name != "B-DAWG Keychain") {
-        item.sellIn = item.sellIn - 1;
-      }
+      this.decreaseSellIn(item);
 
       if (item.sellIn < 0) {
         if (item.name != "Good Wine") {
