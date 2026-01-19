@@ -26,6 +26,7 @@ export class GildedTros {
   }
 
   private getCategory(item: Item): ItemCategory {
+    if (this.isSmelly(item)) return "SMELLY_ITEM";
     if (this.isGoodWine(item)) return "GOOD_WINE";
     if (this.isBackstagePass(item)) return "BACKSTAGE_PASS";
     if (this.isLegendary(item)) return "LEGENDARY_ITEM";
@@ -62,49 +63,66 @@ export class GildedTros {
     return item.sellIn < 0;
   }
 
-  public updateQuality(): void {
-    for (let i = 0; i < this.items.length; i++) {
-      const item = this.items[i];
-      const category = this.getCategory(item);
+  private isSmelly(item: Item): boolean {
+    return (
+      item.name == "Duplicate Code" ||
+      item.name == "Long Methods" ||
+      item.name == "Ugly Variable Names"
+    );
+  }
 
+  private updateItem(item: Item): void {
+    const category = this.getCategory(item);
+
+    switch (category) {
+      case "SMELLY_ITEM":
+        this.decreaseQuality(item, 2);
+        break;
+      case "NORMAL_ITEM":
+        this.decreaseQuality(item, 1);
+        break;
+      case "GOOD_WINE":
+        this.increaseQuality(item, 1);
+        break;
+      case "BACKSTAGE_PASS":
+        this.increaseQuality(item, 1);
+        if (item.sellIn <= 10) {
+          this.increaseQuality(item, 1);
+        }
+
+        if (item.sellIn <= 5) {
+          this.increaseQuality(item, 1);
+        }
+        break;
+      case "LEGENDARY_ITEM":
+        break;
+    }
+
+    this.decreaseSellIn(item);
+
+    if (this.isExpired(item)) {
       switch (category) {
-        case "NORMAL_ITEM":
-          this.decreaseQuality(item, 1);
+        case "SMELLY_ITEM":
+          this.decreaseQuality(item, 2);
           break;
         case "GOOD_WINE":
           this.increaseQuality(item, 1);
           break;
         case "BACKSTAGE_PASS":
-          this.increaseQuality(item, 1);
-          if (item.sellIn <= 10) {
-            this.increaseQuality(item, 1);
-          }
-
-          if (item.sellIn <= 5) {
-            this.increaseQuality(item, 1);
-          }
+          item.quality = 0;
+          break;
+        case "NORMAL_ITEM":
+          this.decreaseQuality(item, 1);
           break;
         case "LEGENDARY_ITEM":
           break;
       }
+    }
+  }
 
-      this.decreaseSellIn(item);
-
-      if (this.isExpired(item)) {
-        switch (category) {
-          case "GOOD_WINE":
-            this.increaseQuality(item, 1);
-            break;
-          case "BACKSTAGE_PASS":
-            item.quality = 0;
-            break;
-          case "NORMAL_ITEM":
-            this.decreaseQuality(item, 1);
-            break;
-          case "LEGENDARY_ITEM":
-            break;
-        }
-      }
+  public updateQuality(): void {
+    for (const item of this.items) {
+      this.updateItem(item);
     }
   }
 }
