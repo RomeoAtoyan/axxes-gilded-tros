@@ -58,6 +58,10 @@ export class GildedTros {
     }
   }
 
+  private isExpired(item: Item): boolean {
+    return item.sellIn < 0;
+  }
+
   public updateQuality(): void {
     for (let i = 0; i < this.items.length; i++) {
       const item = this.items[i];
