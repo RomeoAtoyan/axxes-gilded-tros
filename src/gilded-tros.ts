@@ -49,7 +49,7 @@ export class GildedTros {
     }
 
     if (item.quality > 0) {
-      item.quality = Math.min(0, item.quality - amount);
+      item.quality = Math.max(0, item.quality - amount);
     }
   }
 
