@@ -52,6 +52,12 @@ export class GildedTros {
     }
   }
 
+  private decreaseSellIn(item: Item): void {
+    if (!this.isLegendary(item)) {
+      item.sellIn -= 1;
+    }
+  }
+
   public updateQuality(): void {
     for (let i = 0; i < this.items.length; i++) {
       const item = this.items[i];
