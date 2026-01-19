@@ -32,6 +32,26 @@ export class GildedTros {
     return "NORMAL_ITEM";
   }
 
+  private increaseQuality(item: Item, amount: number): void {
+    if (this.isLegendary(item)) {
+      return;
+    }
+
+    if (item.quality < 50) {
+      item.quality = Math.min(50, item.quality + amount);
+    }
+  }
+
+  private decreaseQuality(item: Item, amount: number): void {
+    if (this.isLegendary(item)) {
+      return;
+    }
+
+    if (item.quality > 0) {
+      item.quality = Math.min(0, item.quality - amount);
+    }
+  }
+
   public updateQuality(): void {
     for (let i = 0; i < this.items.length; i++) {
       const item = this.items[i];
