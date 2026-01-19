@@ -85,31 +85,24 @@ export class GildedTros {
           }
           break;
         case "LEGENDARY_ITEM":
-          return;
-        default:
           break;
       }
 
       this.decreaseSellIn(item);
 
-      if (item.sellIn < 0) {
-        if (item.name != "Good Wine") {
-          if (
-            item.name != "Backstage passes for Re:Factor" &&
-            item.name != "Backstage passes for HAXX"
-          ) {
-            if (item.quality > 0) {
-              if (item.name != "B-DAWG Keychain") {
-                item.quality = item.quality - 1;
-              }
-            }
-          } else {
-            item.quality = item.quality - item.quality;
-          }
-        } else {
-          if (item.quality < 50) {
-            item.quality = item.quality + 1;
-          }
+      if (this.isExpired(item)) {
+        switch (category) {
+          case "GOOD_WINE":
+            this.increaseQuality(item, 1);
+            break;
+          case "BACKSTAGE_PASS":
+            item.quality = 0;
+            break;
+          case "NORMAL_ITEM":
+            this.decreaseQuality(item, 1);
+            break;
+          case "LEGENDARY_ITEM":
+            break;
         }
       }
     }
