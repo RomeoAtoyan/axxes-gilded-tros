@@ -1,5 +1,12 @@
 import { Item } from "./item";
 
+type ItemCategory =
+  | "GOOD_WINE"
+  | "BACKSTAGE_PASS"
+  | "LEGENDARY_ITEM"
+  | "SMELLY_ITEM"
+  | "NORMAL_ITEM";
+
 export class GildedTros {
   constructor(public items: Array<Item>) {}
 
@@ -15,7 +22,14 @@ export class GildedTros {
   }
 
   private isLegendary(item: Item): boolean {
-    return item.name === "B-DAWG Keychain"
+    return item.name === "B-DAWG Keychain";
+  }
+
+  private getCategory(item: Item): ItemCategory {
+    if (this.isGoodWine(item)) return "GOOD_WINE";
+    if (this.isBackstagePass(item)) return "BACKSTAGE_PASS";
+    if (this.isLegendary(item)) return "LEGENDARY_ITEM";
+    return "NORMAL_ITEM";
   }
 
   public updateQuality(): void {
